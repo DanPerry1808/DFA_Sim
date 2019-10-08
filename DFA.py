@@ -65,8 +65,6 @@ class DFA:
             
     # Checks if a DFA has the correct number of connections to be usable
     def is_valid_DFA(self):
-        # Creates a set equivalent to the alphabet
-        alpha_set = set(self.alphabet)
         # Each state must have a connection for each character in the alphabet
         for state in self.con_list:
             # Creates an empty set to hold characters of transitions for this state

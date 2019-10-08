@@ -61,10 +61,8 @@ def parse_dfa(dfa_file, name):
     
     # Get accept states
     accept_line = dfa_file[3].split(" ")
-    print(accept_line)
     if accept_line[0] == "ACCEPT":
         accept_states = accept_line[1].split(",")
-        print(accept_states)
         # Check number of accept states is not more than the number of states
         if len(accept_states) > num_states:
             print("There are more accept states than available states")
@@ -74,7 +72,6 @@ def parse_dfa(dfa_file, name):
         accept_bools = [False] * num_states
         # Convert each accept state to an integer and append to list
         for accept in accept_states:
-            print(accept)
             try:
                 accept_int = int(accept)
                 # Once converted to Integer, add to list
@@ -130,6 +127,20 @@ def parse_dfa(dfa_file, name):
        
     return new_dfa
        
+# Loads in a .dfa file and returns the contents as a list where each element
+# of the list is a line from the file
+# If file cannot be found, None is returned
+def load_file(filepath):
+    # Check file exists
+    if path.exists(filepath):
+        with open(filepath, "r") as f:
+            # Split file contents by new line character
+            return f.read().split("\n")
+
+    else:
+        print("Could not find file at " + filepath)
+        return None
+
        
 def parse_line(line):
     split_line = line.split(" ")
@@ -158,27 +169,20 @@ def parse_line(line):
             print("Correct usage: info [dfa_name]")
     elif command == "load":
         if len(split_line) == 2:
-            if path.exists(split_line[1]):
-                with open(split_line[1], "r") as f:
-                    # Splits file contents by new line
-                    dfa_text = f.read().split("\n")
-                    # filename is file name but without extension
-                    filename = path.basename(split_line[1]).split(".")[0]
-                    dfa = parse_dfa(dfa_text, filename)
+            dfa_text = load_file(split_line[1])
+            # filename is file name but without extension
+            filename = path.basename(split_line[1]).split(".")[0]
+            dfa = parse_dfa(dfa_text, filename)
 
-                    # Check if DFA was parsed successfully
-                    if dfa != None:
-                        dfa_dict[filename] = dfa
-                        print('Loaded new DFA called "' + filename + '"')
-                    else:
-                        # Inform user of error
-                        print("There was an error trying to parse the DFA")
-                    
+            # Check if DFA was parsed successfully
+            if dfa != None:
+                dfa_dict[filename] = dfa
+                print('Loaded new DFA called "' + filename + '"')
             else:
-                print("The file " + split_line[1] + " could not be found")
+                # Inform user of error
+                print("There was an error trying to parse the DFA")
         else:
-            print("Please specify a filepath")
-
+            print("Please specify a filepath without spaces")
     elif command == "run":
         # Check if command is correct length
         if len(split_line) > 2:
