@@ -1,5 +1,5 @@
 # DFA_Sim
-A text based program for running Determinative Finite Automata. DFAs can be described in a simple text based format and then read into the program where you can pass strings to them.
+A text based program for running Deterministic Finite Automata. DFAs can be described in a simple text based format and then read into the program where you can pass strings to them.
 
 ## Download and Installation
 You will need Python 3 installed as a prerequisite
